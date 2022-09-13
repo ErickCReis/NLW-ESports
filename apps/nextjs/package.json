@@ -9,17 +9,18 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "next": "12.2.5",
-    "react": "18.0.0",
-    "react-dom": "18.0.0",
-    "zod": "^3.18.0",
-    "@acme/db": "*",
     "@acme/api": "*",
+    "@acme/db": "*",
     "@tanstack/react-query": "^4.2.3",
-    "@trpc/server": "10.0.0-proxy-alpha.64",
     "@trpc/client": "10.0.0-proxy-alpha.64",
     "@trpc/next": "10.0.0-proxy-alpha.64",
-    "@trpc/react": "10.0.0-proxy-alpha.64"
+    "@trpc/react": "10.0.0-proxy-alpha.64",
+    "@trpc/server": "10.0.0-proxy-alpha.64",
+    "next": "12.2.5",
+    "phosphor-react": "^1.4.1",
+    "react": "18.0.0",
+    "react-dom": "18.0.0",
+    "zod": "^3.18.0"
   },
   "devDependencies": {
     "@types/node": "18.0.0",
@@ -27,13 +28,13 @@
     "@types/react-dom": "18.0.5",
     "@typescript-eslint/eslint-plugin": "^5.33.0",
     "@typescript-eslint/parser": "^5.33.0",
-    "next-transpile-modules": "^9.0.0",
+    "autoprefixer": "^10.4.7",
     "eslint": "8.22.0",
     "eslint-config-next": "12.2.5",
-    "typescript": "4.8.2",
-    "tailwindcss": "^3.1.6",
+    "next-transpile-modules": "^9.0.0",
     "postcss": "^8.4.14",
-    "autoprefixer": "^10.4.7"
+    "tailwindcss": "^3.1.6",
+    "typescript": "4.8.2"
   },
   "ct3aMetadata": {
     "initVersion": "6.0.0-next.e267c33"
