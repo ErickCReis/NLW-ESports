@@ -3,8 +3,11 @@ import Image from "next/future/image";
 import { MagnifyingGlassPlus } from "phosphor-react";
 
 import logoImg from "../assets/logo-nlw-esports.svg";
+import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
+  const { data: games } = trpc.game.all.useQuery();
+
   return (
     <main className="max-w-[1344px] mx-auto flex flex-col items-center my-20">
       <Image src={logoImg} alt="Logo NLW ESports" />
@@ -17,65 +20,19 @@ const Home: NextPage = () => {
       </h1>
 
       <div className="grid grid-cols-6 gap-6 mt-16">
-        <a href="" className="relative rounded-lg overflow-hidden">
-          <img src="/game-1.png" alt="" />
+        {games &&
+          games.map(({ id, name, box_art_url, ads }) => (
+            <a key={id} href="" className="relative rounded-lg overflow-hidden">
+              <img src={box_art_url} alt="" className="w-full h-full" />
 
-          <div className="w-full pt-16 pb-4 px-4 bg-game-gradient absolute bottom-0 left-0 right-0">
-            <strong className="font-bold text-white block">
-              League of Legends
-            </strong>
-            <span className="text-zinc-300 text-sm block">4 anúncios</span>
-          </div>
-        </a>
-
-        <a href="" className="relative rounded-lg overflow-hidden">
-          <img src="/game-2.png" alt="" />
-
-          <div className="w-full pt-16 pb-4 px-4 bg-game-gradient absolute bottom-0 left-0 right-0">
-            <strong className="font-bold text-white block">Dota 2</strong>
-            <span className="text-zinc-300 text-sm block">4 anúncios</span>
-          </div>
-        </a>
-
-        <a href="" className="relative rounded-lg overflow-hidden">
-          <img src="/game-3.png" alt="" />
-
-          <div className="w-full pt-16 pb-4 px-4 bg-game-gradient absolute bottom-0 left-0 right-0">
-            <strong className="font-bold text-white block">
-              Counter Strike
-            </strong>
-            <span className="text-zinc-300 text-sm block">4 anúncios</span>
-          </div>
-        </a>
-
-        <a href="" className="relative rounded-lg overflow-hidden">
-          <img src="/game-4.png" alt="" />
-
-          <div className="w-full pt-16 pb-4 px-4 bg-game-gradient absolute bottom-0 left-0 right-0">
-            <strong className="font-bold text-white block">Apex Legends</strong>
-            <span className="text-zinc-300 text-sm block">4 anúncios</span>
-          </div>
-        </a>
-
-        <a href="" className="relative rounded-lg overflow-hidden">
-          <img src="/game-5.png" alt="" />
-
-          <div className="w-full pt-16 pb-4 px-4 bg-game-gradient absolute bottom-0 left-0 right-0">
-            <strong className="font-bold text-white block">Fortnite</strong>
-            <span className="text-zinc-300 text-sm block">4 anúncios</span>
-          </div>
-        </a>
-
-        <a href="" className="relative rounded-lg overflow-hidden">
-          <img src="/game-6.png" alt="" />
-
-          <div className="w-full pt-16 pb-4 px-4 bg-game-gradient absolute bottom-0 left-0 right-0">
-            <strong className="font-bold text-white block">
-              World of Warcraft
-            </strong>
-            <span className="text-zinc-300 text-sm block">4 anúncios</span>
-          </div>
-        </a>
+              <div className="w-full pt-16 pb-4 px-4 bg-game-gradient absolute bottom-0 left-0 right-0">
+                <strong className="font-bold text-white block">{name}</strong>
+                <span className="text-zinc-300 text-sm block">
+                  {ads} anúncios
+                </span>
+              </div>
+            </a>
+          ))}
       </div>
 
       <div className="pt-1 mt-8 bg-nlw-gradient self-stretch rounded-lg overflow-hidden">
