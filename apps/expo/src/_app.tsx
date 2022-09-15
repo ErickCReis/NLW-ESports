@@ -7,9 +7,8 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { TRPCProvider } from "./utils/trpc";
 
-import { HomeScreen } from "./screens/home";
-import { Background } from "./components/background";
 import { Loading } from "./components/loading";
+import { Routes } from "./routes";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -31,7 +30,7 @@ const App = () => {
     <TRPCProvider>
       <SafeAreaProvider>
         <View onLayout={onLayoutRootView}>
-          <Background>{fontsLoaded ? <HomeScreen /> : <Loading />}</Background>
+          {fontsLoaded ? <Routes /> : <Loading />}
         </View>
       </SafeAreaProvider>
     </TRPCProvider>

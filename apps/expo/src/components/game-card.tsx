@@ -1,38 +1,34 @@
-import { LinearGradient } from "expo-linear-gradient";
 import {
   ImageBackground,
-  ImageSourcePropType,
   Text,
   TouchableOpacity,
   TouchableOpacityProps,
-  View,
 } from "react-native";
-
-export type GameCardProps = {
-  id: string;
-  name: string;
-  ads: string;
-  cover: ImageSourcePropType;
-};
+import { LinearGradient } from "expo-linear-gradient";
+import { AppRouter } from "@acme/api";
+import { inferProcedureOutput } from "@trpc/server";
 
 type Props = TouchableOpacityProps & {
-  data: GameCardProps;
+  data: inferProcedureOutput<AppRouter["game"]["all"]>[number];
 };
 
 export const GameCard: React.FC<Props> = ({ data, ...rest }) => {
   return (
     <TouchableOpacity
-      className="w-60 h-80 mr-6 rounded-lg overflow-hidden relative"
+      className="relative mr-6 h-80 w-60 overflow-hidden rounded-lg"
       {...rest}
     >
-      <ImageBackground className="w-full h-full" source={data.cover}>
+      <ImageBackground
+        className="h-full w-full"
+        source={{ uri: data.box_art_url }}
+      >
         <LinearGradient
-          className="w-full h-full flex justify-end p-4"
+          className="flex h-full w-full justify-end p-4"
           colors={["rgba(0,0,0,0)", "rgba(0,0,0,0.9)"]}
         >
-          <Text className="text-white text-base font-[bold]">{data.name}</Text>
-          <Text className="text-caption-300 text-base font-[regular]">
-            {data.ads} anúncios
+          <Text className="font-[bold] text-base text-white">{data.name}</Text>
+          <Text className="font-[regular] text-base text-caption-300">
+            {data.ads} anúncio{data.ads == 1 ? "" : "s"}
           </Text>
         </LinearGradient>
       </ImageBackground>

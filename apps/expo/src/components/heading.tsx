@@ -9,8 +9,8 @@ type Props = ViewProps & {
 export const Heading: React.FC<Props> = ({ title, subtitle, ...rest }) => {
   return (
     <View className={"w-full p-8"} {...rest}>
-      <Text className="text-white text-2xl font-[black]">{title}</Text>
-      <Text className="text-caption-400 text-base font-[regular]">
+      <Text className="font-[black] text-2xl text-white">{title}</Text>
+      <Text className="font-[regular] text-base text-caption-400">
         {subtitle}
       </Text>
     </View>

@@ -6,7 +6,7 @@ export const Loading = () => {
       <ActivityIndicator
         color="#8B5CF6"
         size="large"
-        className="p-4 m-auto"
+        className="m-auto p-4"
       ></ActivityIndicator>
     </View>
   );

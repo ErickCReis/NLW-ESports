@@ -12,7 +12,7 @@ type Props = {
 export const Background: React.FC<Props> = ({ children }) => {
   return (
     <ImageBackground
-      className="w-full h-full bg-[#18181B]"
+      className="h-full w-full bg-[#18181B]"
       source={backgroundImg}
       defaultSource={backgroundImg}
     >
