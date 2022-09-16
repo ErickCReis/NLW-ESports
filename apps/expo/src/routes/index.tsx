@@ -1,14 +1,23 @@
-import { NavigationContainer } from "@react-navigation/native";
-import { View } from "react-native";
+import {
+  DefaultTheme,
+  NavigationContainer,
+  Theme,
+} from "@react-navigation/native";
 
 import { AppRoutes } from "./app.routes";
 
+const MyTheme: Theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: "rgba(0,0,0,0)",
+  },
+};
+
 export const Routes = () => {
   return (
-    <View className="h-full w-full">
-      <NavigationContainer>
-        <AppRoutes />
-      </NavigationContainer>
-    </View>
+    <NavigationContainer theme={MyTheme}>
+      <AppRoutes />
+    </NavigationContainer>
   );
 };

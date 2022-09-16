@@ -8,9 +8,9 @@ import { LinearGradient } from "expo-linear-gradient";
 import { AppRouter } from "@acme/api";
 import { inferProcedureOutput } from "@trpc/server";
 
-type Props = TouchableOpacityProps & {
-  data: inferProcedureOutput<AppRouter["game"]["all"]>[number];
-};
+export type Game = inferProcedureOutput<AppRouter["game"]["all"]>[number];
+
+type Props = TouchableOpacityProps & { data: Game };
 
 export const GameCard: React.FC<Props> = ({ data, ...rest }) => {
   return (
@@ -18,12 +18,9 @@ export const GameCard: React.FC<Props> = ({ data, ...rest }) => {
       className="relative mr-6 h-80 w-60 overflow-hidden rounded-lg"
       {...rest}
     >
-      <ImageBackground
-        className="h-full w-full"
-        source={{ uri: data.box_art_url }}
-      >
+      <ImageBackground className="flex-1" source={{ uri: data.box_art_url }}>
         <LinearGradient
-          className="flex h-full w-full justify-end p-4"
+          className="flex-1 justify-end p-4"
           colors={["rgba(0,0,0,0)", "rgba(0,0,0,0.9)"]}
         >
           <Text className="font-[bold] text-base text-white">{data.name}</Text>

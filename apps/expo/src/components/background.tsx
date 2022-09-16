@@ -12,12 +12,12 @@ type Props = {
 export const Background: React.FC<Props> = ({ children }) => {
   return (
     <ImageBackground
-      className="h-full w-full bg-[#18181B]"
+      className="flex-1 bg-[#18181B]"
       source={backgroundImg}
       defaultSource={backgroundImg}
     >
       <StatusBar style="light" />
-      <SafeAreaView>{children}</SafeAreaView>
+      <SafeAreaView className="flex-1">{children}</SafeAreaView>
     </ImageBackground>
   );
 };
