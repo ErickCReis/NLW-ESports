@@ -24,7 +24,7 @@ export const GameCard: React.FC<Props> = ({ data, ...rest }) => {
           colors={["rgba(0,0,0,0)", "rgba(0,0,0,0.9)"]}
         >
           <Text className="font-[bold] text-base text-white">{data.name}</Text>
-          <Text className="font-[regular] text-base text-caption-300">
+          <Text className="font-[regular] text-base text-zinc-300">
             {data.ads} anúncio{data.ads == 1 ? "" : "s"}
           </Text>
         </LinearGradient>

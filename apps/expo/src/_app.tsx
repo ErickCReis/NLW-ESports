@@ -18,7 +18,6 @@ const App = () => {
     semibold: require("../assets/fonts/Inter-SemiBold.ttf"),
     bold: require("../assets/fonts/Inter-Bold.ttf"),
     black: require("../assets/fonts/Inter-Black.ttf"),
-    entypo: require("../assets/fonts/Entypo.ttf"),
     ionicons: require("../assets/fonts/Ionicons.ttf"),
   });
 

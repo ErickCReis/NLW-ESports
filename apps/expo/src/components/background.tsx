@@ -12,7 +12,7 @@ type Props = {
 export const Background: React.FC<Props> = ({ children }) => {
   return (
     <ImageBackground
-      className="flex-1 bg-[#18181B]"
+      className="flex-1 bg-dark-800"
       source={backgroundImg}
       defaultSource={backgroundImg}
     >

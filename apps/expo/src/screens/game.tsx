@@ -1,13 +1,17 @@
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
-import { Entypo } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import colors from "tailwindcss/colors";
 
 import { AppRoutesParams } from "../routes/app.routes";
 
 import logoImg from "../assets/logo-nlw-esports.png";
 import { Heading } from "../components/heading";
-import { DuoCard } from "../components/duo-card";
+import { Duo, DuoCard } from "../components/duo-card";
+import { DuoMatch } from "../components/duo-match";
 import { trpc } from "../utils/trpc";
+import { useState } from "react";
+import { inferProcedureOutput } from "@trpc/server";
 
 type GameScreenRouteProp = RouteProp<AppRoutesParams, "game">;
 
@@ -17,11 +21,13 @@ export const GameScreen = () => {
 
   const { data: duos } = trpc.game.adsById.useQuery(game.id);
 
+  const [selectedDuo, setSelectedDuo] = useState<Duo | null>(null);
+
   return (
     <View className="flex h-full w-full items-center">
       <View className="mt-7 flex w-full flex-row items-end justify-between px-8">
         <TouchableOpacity onPress={goBack}>
-          <Entypo name="chevron-thin-left" color="#D4D4D8" size={20} />
+          <Ionicons name="chevron-back" color={colors.zinc["300"]} size={24} />
         </TouchableOpacity>
         <Image source={logoImg} className="h-10 w-20" />
         <View className="w-5" />
@@ -43,7 +49,7 @@ export const GameScreen = () => {
           renderItem={({ item, index }) => (
             <DuoCard
               data={item}
-              onConnect={() => {}}
+              onConnect={() => setSelectedDuo(item)}
               style={`
                   ${index == 0 ? "ml-8" : ""}
                   ${index == duos.length - 1 ? "mr-8" : ""}
@@ -53,12 +59,18 @@ export const GameScreen = () => {
           horizontal
           showsHorizontalScrollIndicator={false}
           ListEmptyComponent={() => (
-            <Text className="text-center text-caption-300">
+            <Text className="text-center font-[regular] text-sm text-zinc-300">
               Não há anúncios publicados ainda
             </Text>
           )}
         />
       )}
+
+      <DuoMatch
+        visible={selectedDuo != null}
+        adId={selectedDuo?.id ?? ""}
+        onClose={() => setSelectedDuo(null)}
+      />
     </View>
   );
 };

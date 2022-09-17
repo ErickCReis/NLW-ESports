@@ -2,19 +2,16 @@
 module.exports = {
   content: ['./src/**/*.{js,ts,jsx,tsx}', './src/_app.tsx'],
   theme: {
+    fontFamily: false,
+    fontWeight: false,
     extend: {
       colors: {
-        caption: {
-          300: '#D4D4D8',
-          400: '#A1A1AA',
-          500: '#71717A',
+        dark: {
+          500: '#2A2634',
+          800: '#18181B',
+          900: '#121214'
         },
       },
-      backgroundImage: {
-        'game-gradient': 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 67%)',
-      },
-      fontFamily: false,
-      fontWeight: false,
     },
   },
   plugins: [],

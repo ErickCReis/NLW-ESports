@@ -1,13 +1,14 @@
 import { ActivityIndicator, View } from "react-native";
+import colors from "tailwindcss/colors";
 
 export const Loading = () => {
   return (
-    <View className="h-full w-full">
+    <View className="flex-1">
       <ActivityIndicator
-        color="#8B5CF6"
+        color={colors.violet["500"]}
         size="large"
         className="m-auto p-4"
-      ></ActivityIndicator>
+      />
     </View>
   );
 };

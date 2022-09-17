@@ -13,9 +13,7 @@ const DuoInfo: React.FC<{
 }> = ({ label, value, valueStyle = "text-white" }) => {
   return (
     <View className="mb-4 w-full">
-      <Text className="mb-1 font-[regular] text-sm text-caption-300">
-        {label}
-      </Text>
+      <Text className="mb-1 font-[regular] text-sm text-zinc-300">{label}</Text>
       <Text className={`font-[bold] text-sm ${valueStyle}`} numberOfLines={1}>
         {value}
       </Text>
@@ -32,7 +30,7 @@ type Props = {
 export const DuoCard: React.FC<Props> = ({ data, onConnect, style = "" }) => {
   return (
     <View
-      className={`mr-6 w-48 flex-grow-0 rounded-lg bg-[#2A2634] p-5 ${style}`}
+      className={`mr-6 w-48 flex-grow-0 rounded-lg bg-dark-500 p-5 ${style}`}
     >
       <DuoInfo label="Nome" value={data.name} />
       <DuoInfo label="Tempo de jogo" value={`${data.yearsPlaying} anos`} />
