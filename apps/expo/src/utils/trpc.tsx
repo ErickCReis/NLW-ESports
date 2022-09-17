@@ -17,9 +17,12 @@ const getBaseUrl = () => {
    * you don't have anything else running on it, or you'd have to change it.
    */
   const localhost = Constants.manifest?.debuggerHost?.split(":")[0];
-  if (!localhost)
-    throw new Error("failed to get localhost, configure it manually");
-  return `http://${localhost}:3000`;
+  if (!!localhost) return `http://${localhost}:3000/api`;
+
+  const apiUrl = Constants.manifest?.extra?.env?.API_URL;
+  if (!!apiUrl) return apiUrl;
+
+  throw new Error("Could not find API URL");
 };
 
 /**
@@ -35,7 +38,7 @@ export const TRPCProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [queryClient] = React.useState(() => new QueryClient());
   const [trpcClient] = React.useState(() => {
-    const url = getBaseUrl() + "/api/trpc";
+    const url = getBaseUrl() + "/trpc";
     return trpc.createClient({ url, transformer });
   });
 

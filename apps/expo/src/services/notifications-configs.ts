@@ -8,7 +8,7 @@ export const startNotificationConfig = () => {
       shouldSetBadge: true,
     }),
   });
-}
+};
 
 export const getPushNotificationToken = async () => {
   let { granted } = await Notifications.getPermissionsAsync();
@@ -23,7 +23,4 @@ export const getPushNotificationToken = async () => {
 
   const pushToken = await Notifications.getExpoPushTokenAsync();
   return pushToken.data;
-}
-
-
-
+};
