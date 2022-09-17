@@ -40,11 +40,6 @@ export const gameRouter = t.router({
       .then((data) => data.data);
 
     const gamesTwitch = await ctx.prisma.game.findMany({
-      select: {
-        id: true,
-        name: true,
-        coverUrl: true,
-      },
       where: {
         name: {
           in: topGamesTwitch.map((game) => game.name),
@@ -59,10 +54,7 @@ export const gameRouter = t.router({
     });
 
     const gamesWithAds = await ctx.prisma.game.findMany({
-      select: {
-        id: true,
-        name: true,
-        coverUrl: true,
+      include: {
         _count: {
           select: {
             ads: true,

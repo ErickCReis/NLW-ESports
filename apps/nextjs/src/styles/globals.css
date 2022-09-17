@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    overflow-y: hidden;
+  }
+
   body {
     @apply bg-[#121214] bg-galaxy bg-cover bg-no-repeat text-white;
   }

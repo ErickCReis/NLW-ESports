@@ -15,14 +15,14 @@ import logoImg from "../assets/logo-nlw-esports.svg";
 
 const Home: NextPage = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { data: games } = trpc.game.all.useQuery();
-
-  const [sliderRef, sliderInstance] = useKeenSlider({
+  const [sliderRef] = useKeenSlider({
     slides: {
       perView: 6,
       spacing: 15,
     },
   });
+
+  const { data: games } = trpc.game.all.useQuery();
 
   return (
     <>
@@ -39,16 +39,17 @@ const Home: NextPage = () => {
           está aqui.
         </h1>
 
-        <div ref={sliderRef} className="keen-slider mt-16">
-          {games &&
-            games.map((game) => (
+        {games && (
+          <div ref={sliderRef} className="keen-slider mt-16">
+            {games.map((game) => (
               <GameBanner
                 className="keen-slider__slide"
-                key={game.id}
+                key={game?.id}
                 game={game}
               />
             ))}
-        </div>
+          </div>
+        )}
 
         <CreateAdBanner onClick={() => setIsOpen(true)} />
 

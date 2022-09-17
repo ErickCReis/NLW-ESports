@@ -13,7 +13,7 @@ export const adRouter = t.router({
         hourStart: z.string().length(5),
         hourEnd: z.string().length(5),
         useVoiceChannel: z.boolean(),
-        gameId: z.string(),
+        gameId: z.number(),
       })
     )
     .mutation(({ ctx, input }) => {

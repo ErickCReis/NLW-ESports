@@ -33,7 +33,7 @@ export const GameScreen = () => {
       </View>
 
       <Image
-        source={{ uri: game.coverUrl ?? '' }}
+        source={{ uri: game.coverUrl ?? "" }}
         className="mt-8 h-40 w-80 rounded-lg"
         resizeMode="cover"
       ></Image>

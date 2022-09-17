@@ -39,7 +39,7 @@ export const BannerDialog: React.FC<{
           };
         }
 
-        if (key === "yearsPlaying") {
+        if (key === "yearsPlaying" || key === "gameId") {
           return {
             ...acc,
             [key]: Number(value),
