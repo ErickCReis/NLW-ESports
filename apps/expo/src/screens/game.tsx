@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
@@ -10,8 +11,6 @@ import { Heading } from "../components/heading";
 import { Duo, DuoCard } from "../components/duo-card";
 import { DuoMatch } from "../components/duo-match";
 import { trpc } from "../utils/trpc";
-import { useState } from "react";
-import { inferProcedureOutput } from "@trpc/server";
 
 type GameScreenRouteProp = RouteProp<AppRoutesParams, "game">;
 
@@ -34,7 +33,7 @@ export const GameScreen = () => {
       </View>
 
       <Image
-        source={{ uri: game.box_art_url }}
+        source={{ uri: game.coverUrl ?? '' }}
         className="mt-8 h-40 w-80 rounded-lg"
         resizeMode="cover"
       ></Image>

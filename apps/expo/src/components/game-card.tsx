@@ -18,7 +18,7 @@ export const GameCard: React.FC<Props> = ({ data, ...rest }) => {
       className="relative mr-6 h-80 w-60 overflow-hidden rounded-lg"
       {...rest}
     >
-      <ImageBackground className="flex-1" source={{ uri: data.box_art_url }}>
+      <ImageBackground className="flex-1" source={{ uri: data.coverUrl ?? '' }}>
         <LinearGradient
           className="flex-1 justify-end p-4"
           colors={["rgba(0,0,0,0)", "rgba(0,0,0,0.9)"]}

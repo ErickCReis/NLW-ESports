@@ -36,7 +36,7 @@ export const HomeScreen = () => {
         <FlatList
           data={games}
           className="flex-grow-0"
-          keyExtractor={(game) => game.id}
+          keyExtractor={(game) => game.id.toString()}
           renderItem={({ item, index }) => (
             <GameCard
               data={item}
