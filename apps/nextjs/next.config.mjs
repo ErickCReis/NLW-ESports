@@ -1,5 +1,5 @@
 // @ts-check
-import { env } from "./src/env/server.mjs";
+import { serverEnv } from "@acme/env";
 import withTM from "next-transpile-modules";
 
 /**
@@ -19,7 +19,7 @@ export default withTM(['@acme/api', '@acme/db'])(
     reactStrictMode: true,
     swcMinify: true,
     experimental: {
-      images: { allowFutureImage: true }
+      images: { allowFutureImage: true },
     },
   })
 );

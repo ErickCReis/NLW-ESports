@@ -9,6 +9,7 @@ export const serverSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]),
   TWITCH_CLIENT_ID: z.string(),
   TWITCH_CLIENT_SECRET: z.string(),
+  ADMIN_SECRET: z.string(),
 });
 
 /**
@@ -26,6 +27,6 @@ export const clientSchema = z.object({
  * and only used environment variables are included in the build.
  * @type {{ [k in keyof z.infer<typeof clientSchema>]: z.infer<typeof clientSchema>[k] | undefined }}
  */
-export const clientEnv = {
+export const clientEnvData = {
   // NEXT_PUBLIC_BAR: process.env.NEXT_PUBLIC_BAR,
 };

@@ -1,7 +1,7 @@
 // @ts-check
-import { clientEnv, clientSchema } from "./schema.mjs";
+import { clientEnvData, clientSchema } from "./schema.mjs";
 
-const _clientEnv = clientSchema.safeParse(clientEnv);
+const _clientEnv = clientSchema.safeParse(clientEnvData);
 
 export const formatErrors = (
   /** @type {import('zod').ZodFormattedError<Map<string,string>,string>} */
@@ -30,4 +30,4 @@ for (let key of Object.keys(_clientEnv.data)) {
   }
 }
 
-export const env = _clientEnv.data;
+export const clientEnv = _clientEnv.data;

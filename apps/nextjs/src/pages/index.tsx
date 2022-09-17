@@ -2,6 +2,8 @@ import { useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/future/image";
+import "keen-slider/keen-slider.min.css";
+import { useKeenSlider } from "keen-slider/react";
 
 import { trpc } from "../utils/trpc";
 
@@ -14,6 +16,13 @@ import logoImg from "../assets/logo-nlw-esports.svg";
 const Home: NextPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { data: games } = trpc.game.all.useQuery();
+
+  const [sliderRef, sliderInstance] = useKeenSlider({
+    slides: {
+      perView: 6,
+      spacing: 15,
+    },
+  });
 
   return (
     <>
@@ -30,9 +39,15 @@ const Home: NextPage = () => {
           está aqui.
         </h1>
 
-        <div className="mt-16 grid grid-cols-6 gap-6">
+        <div ref={sliderRef} className="keen-slider mt-16">
           {games &&
-            games.map((game) => <GameBanner key={game.id} game={game} />)}
+            games.map((game) => (
+              <GameBanner
+                className="keen-slider__slide"
+                key={game.id}
+                game={game}
+              />
+            ))}
         </div>
 
         <CreateAdBanner onClick={() => setIsOpen(true)} />

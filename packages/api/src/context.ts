@@ -6,7 +6,9 @@ import { prisma } from "@acme/db";
 /**
  * Replace this with an object if you want to pass things to createContextInner
  */
-type CreateContextOptions = Record<string, never>;
+type CreateContextOptions = {
+  authorizationHeader?: string;
+};
 
 /** Use this helper for:
  *  - testing, where we dont have to Mock Next.js' req/res
@@ -15,6 +17,7 @@ type CreateContextOptions = Record<string, never>;
 export const createContextInner = async (opts: CreateContextOptions) => {
   return {
     prisma,
+    ...opts,
   };
 };
 
@@ -25,7 +28,10 @@ export const createContextInner = async (opts: CreateContextOptions) => {
 export const createContext = async (
   opts: trpcNext.CreateNextContextOptions
 ) => {
-  return await createContextInner({});
+  const authorizationHeader = opts.req.headers.authorization;
+  return await createContextInner({
+    authorizationHeader,
+  });
 };
 
 export type Context = trpc.inferAsyncReturnType<typeof createContext>;

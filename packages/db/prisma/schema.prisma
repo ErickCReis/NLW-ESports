@@ -10,10 +10,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Config {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model Ad {
   id              String   @id @default(cuid())
   name            String
-  gameId          String
+  gameId          Int
   yearsPlaying    Int
   discord         String
   weekDays        Int[]
@@ -21,4 +29,15 @@ model Ad {
   hourEnd         Int
   useVoiceChannel Boolean
   createdAt       DateTime @default(now())
+
+  Game Game @relation(fields: [gameId], references: [id])
+}
+
+model Game {
+  id        Int      @id
+  name      String
+  coverUrl  String?
+  createdAt DateTime @default(now())
+
+  ads Ad[]
 }

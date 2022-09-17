@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Combobox } from "@headlessui/react";
 import { CaretDown } from "phosphor-react";
 
-export type AutoCompleteItem = { name: string; value: string };
+export type AutoCompleteItem = { name: string; value: number };
 
 type Props = {
   items: AutoCompleteItem[];
@@ -30,7 +30,7 @@ export const AutoComplete: React.FC<Props> = ({ items, placeholder, name }) => {
           <Combobox.Input
             onChange={(event) => setQuery(event.target.value)}
             placeholder={placeholder}
-            displayValue={(value?: string) =>
+            displayValue={(value?: number) =>
               items.find((item) => item.value === value)?.name ?? ""
             }
             className="w-full rounded bg-zinc-900 px-4 py-3 text-sm placeholder:text-zinc-500"
