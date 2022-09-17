@@ -1,13 +1,62 @@
-import { Dialog } from "@headlessui/react";
-import { GameController } from "phosphor-react";
-import { Input } from "./Form/Input";
+import { Dialog, Switch } from "@headlessui/react";
+import { Check, GameController, Spinner } from "phosphor-react";
+import { AppRouter } from "@acme/api";
+import { inferProcedureInput } from "@trpc/server";
 
-const btnWeekday = "w-8 h-8 rounded bg-zinc-900 font-semibold";
+import { trpc } from "../utils/trpc";
+
+import { Input } from "./Form/Input";
+import { AutoComplete, AutoCompleteItem } from "./Form/AutoComplete";
+import { WeekDayButton } from "./WeekDayButton";
+
+type AdForm = inferProcedureInput<AppRouter["ad"]["create"]>;
 
 export const BannerDialog: React.FC<{
   isOpen: boolean;
   onClose: () => void;
 }> = ({ isOpen, onClose }) => {
+  const { data: games } = trpc.game.all.useQuery();
+  const { mutate, isLoading } = trpc.ad.create.useMutation({
+    onSuccess: onClose,
+    onError: (error) => console.log(error.message),
+  });
+
+  const gameOptions: AutoCompleteItem[] =
+    games?.map((game) => ({ name: game.name, value: game.id })) ?? [];
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+    const rawParamsForm = Object.fromEntries(formData);
+
+    const paramsForm = Object.entries(rawParamsForm).reduce(
+      (acc, [key, value]) => {
+        if (key.startsWith("weekday-")) {
+          return {
+            ...acc,
+            weekDays: [...(acc.weekDays ?? []), Number(key.slice(-1))],
+          };
+        }
+
+        if (key === "yearsPlaying") {
+          return {
+            ...acc,
+            [key]: Number(value),
+          };
+        }
+
+        return {
+          ...acc,
+          [key]: value === "on" ? true : value,
+        };
+      },
+      {} as AdForm
+    );
+
+    mutate(paramsForm);
+  };
+
   return (
     <Dialog open={isOpen} onClose={onClose} className="relative z-50">
       <div className="fixed inset-0 flex items-center justify-center  bg-black/60">
@@ -15,22 +64,22 @@ export const BannerDialog: React.FC<{
           <Dialog.Title className="text-3xl font-black">
             Publique um anúncio
           </Dialog.Title>
-          <form className="mt-8 flex flex-col gap-4">
-            <div className="flex flex-col gap-2">
-              <label className="font-semibold" htmlFor="game">
-                Qual o game?
-              </label>
-              <Input
-                id="game"
-                placeholder="Selecione o game que deseja jogar"
-              />
-            </div>
+          <form className="mt-8 flex flex-col gap-4" onSubmit={handleSubmit}>
+            <AutoComplete
+              items={gameOptions}
+              placeholder="Selecione o game que deseja jogar"
+              name="gameId"
+            ></AutoComplete>
 
             <div className="flex flex-col gap-2">
               <label className="font-semibold" htmlFor="name">
                 Seu nome (ou nickname)
               </label>
-              <Input id="name" placeholder="Como te chamam dentro do game?" />
+              <Input
+                id="name"
+                name="name"
+                placeholder="Como te chamam dentro do game?"
+              />
             </div>
 
             <div className="grid grid-cols-2 gap-6">
@@ -40,6 +89,7 @@ export const BannerDialog: React.FC<{
                 </label>
                 <Input
                   id="yearsPlaying"
+                  name="yearsPlaying"
                   type="number"
                   placeholder="Tudo bem ser ZERO"
                 />
@@ -48,7 +98,7 @@ export const BannerDialog: React.FC<{
                 <label className="font-semibold" htmlFor="discord">
                   Qual seu Discord?
                 </label>
-                <Input id="discord" placeholder="Usuario#0000" />
+                <Input id="discord" name="discord" placeholder="Usuario#0000" />
               </div>
             </div>
 
@@ -58,27 +108,13 @@ export const BannerDialog: React.FC<{
                   Quando costuma jogar?
                 </label>
                 <div className="text-bold flex flex-wrap justify-center gap-1">
-                  <button className={btnWeekday} title="Domingo">
-                    D
-                  </button>
-                  <button className={btnWeekday} title="Segunda">
-                    S
-                  </button>
-                  <button className={btnWeekday} title="Terça">
-                    T
-                  </button>
-                  <button className={btnWeekday} title="Quarta">
-                    Q
-                  </button>
-                  <button className={btnWeekday} title="Quinta">
-                    Q
-                  </button>
-                  <button className={btnWeekday} title="Sexta">
-                    S
-                  </button>
-                  <button className={btnWeekday} title="Sábado">
-                    S
-                  </button>
+                  <WeekDayButton content="D" title="Domingo" name="0" />
+                  <WeekDayButton content="S" title="Segunda" name="1" />
+                  <WeekDayButton content="T" title="Terça" name="2" />
+                  <WeekDayButton content="Q" title="Quarta" name="3" />
+                  <WeekDayButton content="Q" title="Quinta" name="4" />
+                  <WeekDayButton content="S" title="Sexta" name="5" />
+                  <WeekDayButton content="S" title="Sábado" name="6" />
                 </div>
               </div>
               <div className="flex flex-col gap-2">
@@ -86,17 +122,39 @@ export const BannerDialog: React.FC<{
                   Qual horário do dia?
                 </label>
                 <div className="grid grid-cols-2 gap-2">
-                  <Input id="hourStart" type="time" placeholder="De" />
-                  <Input id="hourEnd" type="time" placeholder="Até" />
+                  <Input
+                    id="hourStart"
+                    name="hourStart"
+                    type="time"
+                    placeholder="De"
+                  />
+                  <Input
+                    id="hourEnd"
+                    name="hourEnd"
+                    type="time"
+                    placeholder="Até"
+                  />
                 </div>
               </div>
             </div>
 
-            <div className="mt-4 flex gap-2 text-sm">
-              <Input id="useVoiceChannel" type="checkbox" />
-              <label htmlFor="useVoiceChannel">
-                Costumo me conectar ao chat de voz
-              </label>
+            <div className="mt-2 flex items-center gap-2 text-sm">
+              <Switch.Group>
+                <Switch
+                  defaultChecked={false}
+                  name="useVoiceChannel"
+                  className="h-6 w-6 rounded bg-zinc-900 p-1"
+                >
+                  {({ checked }) => (
+                    <>
+                      {checked && (
+                        <Check className="h-4 w-4 text-emerald-400" />
+                      )}
+                    </>
+                  )}
+                </Switch>
+                <Switch.Label>Costumo me conectar ao chat de voz</Switch.Label>
+              </Switch.Group>
             </div>
 
             <footer className="mt-4 flex justify-end gap-4">
@@ -106,9 +164,18 @@ export const BannerDialog: React.FC<{
               >
                 Cancelar
               </button>
-              <button className="flex h-12 items-center gap-3 rounded-md bg-violet-500 px-4 font-semibold hover:bg-violet-600">
-                <GameController size={24} />
-                Encontrar duo
+              <button
+                className="flex h-12 items-center gap-3 rounded-md bg-violet-500 px-4 font-semibold hover:bg-violet-600"
+                type="submit"
+              >
+                {isLoading ? (
+                  <Spinner className="h-5 w-5 text-white" />
+                ) : (
+                  <>
+                    <GameController size={24} />
+                    Encontrar duo
+                  </>
+                )}
               </button>
             </footer>
           </form>
