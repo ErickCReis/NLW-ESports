@@ -22,7 +22,7 @@ const Home: NextPage = () => {
     slides: { perView: "auto" },
   });
 
-  const { data: games } = trpc.game.all.useQuery(undefined, {
+  const { data: games, refetch } = trpc.game.all.useQuery(undefined, {
     onSuccess: () => {
       instanceRef.current?.update();
     },
@@ -57,7 +57,13 @@ const Home: NextPage = () => {
 
         <CreateAdBanner onClick={() => setIsOpen(true)} />
 
-        <BannerDialog isOpen={isOpen} onClose={() => setIsOpen(false)} />
+        <BannerDialog
+          isOpen={isOpen}
+          onClose={(success) => {
+            setIsOpen(false);
+            !!success && refetch();
+          }}
+        />
       </main>
     </>
   );

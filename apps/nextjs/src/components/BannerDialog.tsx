@@ -13,11 +13,11 @@ type AdForm = inferProcedureInput<AppRouter["ad"]["create"]>;
 
 export const BannerDialog: React.FC<{
   isOpen: boolean;
-  onClose: () => void;
+  onClose: (success?: boolean) => void;
 }> = ({ isOpen, onClose }) => {
   const { data: games } = trpc.game.all.useQuery();
   const { mutate, isLoading, error } = trpc.ad.create.useMutation({
-    onSuccess: onClose,
+    onSuccess: () => onClose(true),
   });
 
   const gameOptions: AutoCompleteItem[] =
@@ -113,10 +113,10 @@ export const BannerDialog: React.FC<{
 
             <div className="grid grid-cols-2 gap-6">
               <div className="flex flex-col gap-2">
-                <label className="relative font-semibold" htmlFor="weekdays">
+                <label className="font-semibold" htmlFor="weekdays">
                   Quando costuma jogar?
                   {error?.data?.zodError?.fieldErrors["weekDays"]?.[0] && (
-                    <span className="absolute right-1 text-red-500">*</span>
+                    <span className="pl-1 text-red-500">*</span>
                   )}
                 </label>
                 <div className="text-bold flex flex-wrap justify-center gap-1">
@@ -174,7 +174,7 @@ export const BannerDialog: React.FC<{
             <footer className="mt-4 flex justify-end gap-4">
               <button
                 className="h-12 rounded-md bg-zinc-500 px-4 font-semibold hover:bg-zinc-500"
-                onClick={onClose}
+                onClick={() => onClose()}
               >
                 Cancelar
               </button>
