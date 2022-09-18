@@ -33,23 +33,24 @@ export const gameRouter = t.router({
       "Content-Type": "application/json",
     };
 
-    const topGamesTwitch: GameTwitch[] = await fetch(url, {
+    const topGamesTwitch: string[] = await fetch(url, {
       headers,
     })
       .then((res) => res.json())
-      .then((data) => data.data);
+      .then((data) => data.data as GameTwitch[])
+      .then((data) => data.map((game) => game.name));
 
     const gamesTwitch = await ctx.prisma.game.findMany({
       where: {
         name: {
-          in: topGamesTwitch.map((game) => game.name),
+          in: topGamesTwitch,
         },
       },
     });
 
     const gamesTwitchSorted = gamesTwitch.sort((a, b) => {
-      const aIndex = topGamesTwitch.findIndex((game) => game.name === a.name);
-      const bIndex = topGamesTwitch.findIndex((game) => game.name === b.name);
+      const aIndex = topGamesTwitch.findIndex((name) => name === a.name);
+      const bIndex = topGamesTwitch.findIndex((name) => name === b.name);
       return aIndex - bIndex;
     });
 
@@ -67,7 +68,6 @@ export const gameRouter = t.router({
       take: searchSize,
     });
 
-    // merge games with at least one ad and games from twitch
     const games = gamesWithAds
       .filter((game) => game._count.ads > 0)
       .concat(
@@ -79,12 +79,17 @@ export const gameRouter = t.router({
         }))
       );
 
-    return games.map((game) => ({
-      id: game.id,
-      name: game.name,
-      coverUrl: game.coverUrl,
-      ads: game._count.ads,
-    }));
+    return games
+      .map((game) => ({
+        id: game.id,
+        name: game.name,
+        coverUrl: game.coverUrl ?? "/images/cover-placeholder.jpg",
+        ads: game._count.ads,
+      }))
+      .filter(
+        (value, index, self) =>
+          index === self.findIndex((game) => game.name === value.name)
+      );
   }),
   adsById: t.procedure.input(z.number()).query(async ({ ctx, input }) => {
     const ads = await ctx.prisma.ad.findMany({
