@@ -8,9 +8,15 @@ type Props = {
   items: AutoCompleteItem[];
   placeholder?: string;
   name: string;
+  error?: string;
 };
 
-export const AutoComplete: React.FC<Props> = ({ items, placeholder, name }) => {
+export const AutoComplete: React.FC<Props> = ({
+  items,
+  placeholder,
+  name,
+  error,
+}) => {
   const [query, setQuery] = useState("");
 
   const filteredItems =
@@ -33,7 +39,9 @@ export const AutoComplete: React.FC<Props> = ({ items, placeholder, name }) => {
             displayValue={(value?: number) =>
               items.find((item) => item.value === value)?.name ?? ""
             }
-            className="w-full rounded bg-zinc-900 px-4 py-3 text-sm placeholder:text-zinc-500"
+            className={`w-full rounded bg-zinc-900 px-4 py-3 text-sm placeholder:text-zinc-500 ${
+              !!error ? "border-red-500" : "border-transparent"
+            }`}
           />
           <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
             <CaretDown className="h-5 w-5 text-zinc-400" aria-hidden="true" />

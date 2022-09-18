@@ -6,29 +6,27 @@ export const adRouter = t.router({
   create: t.procedure
     .input(
       z.object({
-        name: z.string(),
+        name: z.string().min(1, { message: "Required" }),
         yearsPlaying: z.number(),
-        discord: z.string(),
+        discord: z.string().min(1, { message: "Required" }),
         weekDays: z.array(z.number()),
-        hourStart: z.string().length(5),
-        hourEnd: z.string().length(5),
-        useVoiceChannel: z.boolean(),
+        hourStart: z
+          .string()
+          .regex(/\d\d:\d\d/, { message: "Invalid format" })
+          .transform(convertHourStringToMinutes),
+        hourEnd: z
+          .string()
+          .regex(/\d\d:\d\d/, { message: "Invalid format" })
+          .transform(convertHourStringToMinutes),
+        useVoiceChannel: z
+          .boolean()
+          .optional()
+          .transform((v) => v ?? false),
         gameId: z.number(),
       })
     )
     .mutation(({ ctx, input }) => {
-      return ctx.prisma.ad.create({
-        data: {
-          name: input.name,
-          yearsPlaying: input.yearsPlaying,
-          discord: input.discord,
-          weekDays: input.weekDays,
-          hourStart: convertHourStringToMinutes(input.hourStart),
-          hourEnd: convertHourStringToMinutes(input.hourEnd),
-          useVoiceChannel: input.useVoiceChannel,
-          gameId: input.gameId,
-        },
-      });
+      return ctx.prisma.ad.create({ data: input });
     }),
   discord: t.procedure.input(z.string()).query(({ ctx, input }) => {
     return ctx.prisma.ad.findUniqueOrThrow({

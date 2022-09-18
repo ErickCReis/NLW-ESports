@@ -17,15 +17,15 @@ const Home: NextPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     loop: false,
-    mode: 'snap',
+    mode: "snap",
     rtl: false,
-    slides: { perView: 'auto' },
+    slides: { perView: "auto" },
   });
 
-  const { data: games } = trpc.game.all.useQuery(undefined,{
+  const { data: games } = trpc.game.all.useQuery(undefined, {
     onSuccess: () => {
       instanceRef.current?.update();
-    }
+    },
   });
 
   return (

@@ -16,9 +16,8 @@ export const BannerDialog: React.FC<{
   onClose: () => void;
 }> = ({ isOpen, onClose }) => {
   const { data: games } = trpc.game.all.useQuery();
-  const { mutate, isLoading } = trpc.ad.create.useMutation({
+  const { mutate, isLoading, error } = trpc.ad.create.useMutation({
     onSuccess: onClose,
-    onError: (error) => console.log(error.message),
   });
 
   const gameOptions: AutoCompleteItem[] =
@@ -60,7 +59,7 @@ export const BannerDialog: React.FC<{
   return (
     <Dialog open={isOpen} onClose={onClose} className="relative z-50">
       <div className="fixed inset-0 flex items-center justify-center  bg-black/60">
-        <Dialog.Panel className="w-full max-w-[488px] rounded-lg bg-[#2A2634] px-10 py-8 shadow-lg shadow-black/80">
+        <Dialog.Panel className="w-full max-w-lg rounded-lg bg-[#2A2634] px-10 py-8 shadow-lg shadow-black/80">
           <Dialog.Title className="text-3xl font-black">
             Publique um anúncio
           </Dialog.Title>
@@ -69,6 +68,7 @@ export const BannerDialog: React.FC<{
               items={gameOptions}
               placeholder="Selecione o game que deseja jogar"
               name="gameId"
+              error={error?.data?.zodError?.fieldErrors["gameId"]?.[0]}
             ></AutoComplete>
 
             <div className="flex flex-col gap-2">
@@ -79,6 +79,7 @@ export const BannerDialog: React.FC<{
                 id="name"
                 name="name"
                 placeholder="Como te chamam dentro do game?"
+                error={error?.data?.zodError?.fieldErrors["name"]?.[0]}
               />
             </div>
 
@@ -92,20 +93,31 @@ export const BannerDialog: React.FC<{
                   name="yearsPlaying"
                   type="number"
                   placeholder="Tudo bem ser ZERO"
+                  error={
+                    error?.data?.zodError?.fieldErrors["yearsPlaying"]?.[0]
+                  }
                 />
               </div>
               <div className="flex flex-col gap-2">
                 <label className="font-semibold" htmlFor="discord">
                   Qual seu Discord?
                 </label>
-                <Input id="discord" name="discord" placeholder="Usuario#0000" />
+                <Input
+                  id="discord"
+                  name="discord"
+                  placeholder="Usuario#0000"
+                  error={error?.data?.zodError?.fieldErrors["discord"]?.[0]}
+                />
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-6">
               <div className="flex flex-col gap-2">
-                <label className="font-semibold" htmlFor="weekdays">
+                <label className="relative font-semibold" htmlFor="weekdays">
                   Quando costuma jogar?
+                  {error?.data?.zodError?.fieldErrors["weekDays"]?.[0] && (
+                    <span className="absolute right-1 text-red-500">*</span>
+                  )}
                 </label>
                 <div className="text-bold flex flex-wrap justify-center gap-1">
                   <WeekDayButton content="D" title="Domingo" name="0" />
@@ -127,12 +139,14 @@ export const BannerDialog: React.FC<{
                     name="hourStart"
                     type="time"
                     placeholder="De"
+                    error={error?.data?.zodError?.fieldErrors["hourStart"]?.[0]}
                   />
                   <Input
                     id="hourEnd"
                     name="hourEnd"
                     type="time"
                     placeholder="Até"
+                    error={error?.data?.zodError?.fieldErrors["hourEnd"]?.[0]}
                   />
                 </div>
               </div>
