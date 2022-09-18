@@ -17,9 +17,9 @@ const Home: NextPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     loop: false,
-    mode: "snap",
+    mode: "free-snap",
     rtl: false,
-    slides: { perView: "auto" },
+    slides: { perView: "auto", spacing: 16 },
   });
 
   const { data: games, refetch } = trpc.game.all.useQuery(undefined, {
@@ -44,7 +44,7 @@ const Home: NextPage = () => {
         </h1>
 
         {games && (
-          <div ref={sliderRef} className="keen-slider mt-16 gap-4">
+          <div ref={sliderRef} className="keen-slider mt-16">
             {games.map((game) => (
               <GameBanner
                 className="keen-slider__slide min-w-[160px] max-w-[160px]"
